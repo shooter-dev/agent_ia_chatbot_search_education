@@ -1,0 +1,40 @@
+@startuml
+class Etudiant {
+    - id: str
+    - nom: str
+    - age: int
+    - diplomes: List[Diplome] | None
+    - centreInterets: List[CentreInteret] | None
+    - ville: str
+
+}
+
+class InterfaceStreamlit {
+    + affiche_question(question: str) -> None
+    + affiche_responce(responce: str) -> None
+    + envoi_requete(question: str) -> None
+}
+
+class Agent {
+    - id: int
+
+    + traiter_requete(question: str) -> str
+    + appeler_llm(question: str) -> str
+}
+
+class LLM_RAG {
+    + generate_responce(question: str) -> str
+    + search_contex(question: str) -> str
+}
+
+class Document {
+    - id: int
+    - title: str
+    - content: str
+}
+
+Etudiant --|> InterfaceStreamlit : consulte > 1..1
+InterfaceStreamlit --|> Agent : envoie requête > 1..1
+Agent --|> LLM_RAG : interroge > 1..1
+LLM_RAG --|> Document : récupère > 1..*
+@enduml

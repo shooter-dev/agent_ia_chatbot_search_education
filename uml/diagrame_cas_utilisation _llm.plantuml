@@ -1,0 +1,20 @@
+@startuml
+actor LLM
+actor LLM_RAG
+actor BaseDocumentaire
+
+usecase "Recevoir une requête" as RR
+usecase "Générer une réponse" as GR
+usecase "Interroger la base documentaire" as IB
+usecase "Améliorer la réponse" as AR
+usecase "Fournir la réponse finale" as FR
+
+LLM_RAG --> RR
+RR --> LLM
+LLM --> GR
+LLM_RAG --> IB
+IB --> BaseDocumentaire
+BaseDocumentaire --> AR
+AR --> LLM
+LLM --> FR
+@enduml

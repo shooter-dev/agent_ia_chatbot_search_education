@@ -1,0 +1,18 @@
+@startuml
+actor Étudiant
+
+usecase "Consulter l’interface" as CI
+usecase "Poser une question" as PQ
+usecase "Traiter la requête" as TR
+usecase "Interroger le LLM" as IL
+usecase "Obtenir une réponse" as OR
+usecase "Afficher la réponse" as AR
+
+Étudiant --> CI
+Étudiant --> PQ
+PQ --> TR
+TR --> IL
+IL --> OR
+OR --> AR
+AR --> Étudiant
+@enduml

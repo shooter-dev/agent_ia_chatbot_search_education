@@ -1,13 +1,4 @@
 @startuml
-class Etudiant {
-    - id: str
-    - nom: str
-    - age: int
-    - diplomes: List[Diplome] | None
-    - centreInterets: List[CentreInteret] | None
-    - ville: str
-
-}
 
 class InterfaceStreamlit {
     + affiche_question(question: str) -> None
@@ -33,8 +24,8 @@ class Document {
     - content: str
 }
 
-Etudiant --|> InterfaceStreamlit : consulte > 1..1
 InterfaceStreamlit --|> Agent : envoie requête > 1..1
 Agent --|> LLM_RAG : interroge > 1..1
 LLM_RAG --|> Document : récupère > 1..*
+
 @enduml

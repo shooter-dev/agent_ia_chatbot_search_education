@@ -90,7 +90,3 @@ def main():
     # 4. Affichage simple
     print(f"\n✅ {len(all_documents)} documents chargés avec succès.\n")
     print("🔎 Aperçu des premiers documents :\n")
-    
-    
-
-

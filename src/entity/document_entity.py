@@ -10,7 +10,6 @@ class Document:
     def __repr__(self):
         return f"Document(id={self.id}, title='{self.title}', content='{self.content}')" 
     
-
 import os
 from langchain.document_loaders import CSVLoader, UnstructuredXMLLoader, UnstructuredExcelLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter

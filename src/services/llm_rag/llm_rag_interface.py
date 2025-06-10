@@ -1,6 +1,14 @@
-from abc import abstractmethod, ABC
+import abc
 
+class ILlmRag(abc.ABC):
 
-class ILlmRag(ABC):
+    def __init__(self):
+        pass
 
-    pass
+    @abc.abstractmethod
+    def generate_responce(question: str) -> str:
+        return ''
+
+    @abc.abstractmethod
+    def search_contex(question: str) -> str:
+        return ''

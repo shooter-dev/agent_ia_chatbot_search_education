@@ -11,6 +11,7 @@ from langchain.agents import AgentExecutor, create_react_agent
 from langchain.memory import ConversationBufferMemory
 
 class Agent(IAgent):
+
     load_dotenv(override=True)
 
     model = ChatOllama(model="llama3", temperature=0)

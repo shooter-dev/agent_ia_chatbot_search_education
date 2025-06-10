@@ -6,3 +6,5 @@ langchain-ollama
 os 
 pandas 
 xml.etree.ElementTree
+langchain-core
+python-dotenv

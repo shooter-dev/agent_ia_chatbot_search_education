@@ -4,6 +4,8 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_deepseek import DeepSeekEmbeddings
 from langchain_community.vectorstores import FAISS
 
+# 📂 Répertoire des données
+DATA_DIR = "data"
 
 # 1️⃣ Chargement des documents avec Langchain
 def load_documents():

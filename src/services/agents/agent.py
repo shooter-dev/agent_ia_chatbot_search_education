@@ -94,3 +94,16 @@ tools = [
     Tool(name="type_travail", func=type_travail, description="Définir si le métier est manuel ou intellectuel."),
     Tool(name="proposer_metier", func=proposer_metier, description="Proposer un métier en fonction des réponses.")
 ]
+
+def executer_agent(agent):
+    agent.determiner_question_suivante()
+
+    historique = agent.memory.load_memory_variables({})
+    interet = ", ".join(historique.get("interet", "").split(", "))
+    competences = ", ".join(historique.get("competences", "").split(", "))
+    type_travail = ", ".join(historique.get("type_travail", "").split(", "))
+
+    response = agent.proposer_metier(interet, competences, type_travail)
+    return {"response": response}
+
+

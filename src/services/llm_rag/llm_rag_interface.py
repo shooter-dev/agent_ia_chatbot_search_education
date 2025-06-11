@@ -6,9 +6,9 @@ class ILlmRag(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def generate_responce(question: str) -> str:
+    def generate_responce(self, question: str) -> str:
         return ''
 
     @abc.abstractmethod
-    def search_contex(question: str) -> str:
+    def search_contex(self, question: str) -> str:
         return ''

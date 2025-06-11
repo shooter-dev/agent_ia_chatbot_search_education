@@ -3,8 +3,7 @@ langchain-community
 langchain-openai
 langchain-deepseek
 langchain-ollama
-os 
-pandas 
-xml.etree.ElementTree
-langchain-core
-python-dotenv
+langchain.document_loaders
+langchain.text_splitters
+langchain_community.vectorstores
+langchain_deepseek

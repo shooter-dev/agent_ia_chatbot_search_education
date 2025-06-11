@@ -1,5 +1,5 @@
 import os
-from langchain.document_loaders import CSVLoader, UnstructuredXMLLoader, UnstructuredExcelLoader
+from langchain_community.document_loaders import CSVLoader, UnstructuredXMLLoader, UnstructuredExcelLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_deepseek import DeepSeekEmbeddings
 from langchain_community.vectorstores import FAISS

@@ -68,8 +68,21 @@ class Agent(IAgent):
                 type_travail.append(type_travail_input)
                 self.memory.save_context({"type_travail": ", ".join(type_travail)}, {})
 
-        return proposer_metier(", ".join(interet), ", ".join(competences), ", ".join(type_travail))
+        return self.proposer_metier(", ".join(interet), ", ".join(competences), ", ".join(type_travail))
 
+    def proposer_metier(self, interets: str, competences: str, type_travail: str):
+        prompt = f"""
+        Analyse les informations suivantes et propose un métier adapté :
+        - Centres d'intérêt : {interets}
+        - Compétences : {competences}
+        - Type de travail préféré : {type_travail}
+
+        Utilise ces trois critères pour déterminer un métier qui correspond le mieux à la personne.
+        Donne une réponse concise sous la forme : "Un métier adapté pourrait être : [nom du métier]".
+        """
+
+        response = self.model.predict(prompt)
+        return response
 
 def interet_etudiant(interets: str):
     return f"Tu es intéressé par {interets}. Cela pourrait correspondre à certains métiers."
@@ -80,19 +93,13 @@ def competences_etudiant(competences: str):
 def type_travail(choix: str):
     return f"Tu préfères un travail {choix}. Cela réduit les options de métiers."
 
-def proposer_metier(interets: str, competences: str, type_travail: str):
-    if "informatique" in interets or "programmation" in competences:
-        return f"En fonction de tes intérêts ({interets}), compétences ({competences}) et préférence ({type_travail}), un métier adapté pourrait être : Développeur logiciel."
-    elif "créatif" in interets or "design" in competences:
-        return f"En fonction de tes intérêts ({interets}), compétences ({competences}) et préférence ({type_travail}), un métier adapté pourrait être : Designer graphique."
-    else:
-        return f"En fonction de tes intérêts ({interets}), compétences ({competences}) et préférence ({type_travail}), un métier adapté pourrait être : à affiner avec plus de détails."
+agent = Agent()
 
 tools = [
     Tool(name="interet", func=interet_etudiant, description="Définir les centres d'intérêt."),
     Tool(name="competences", func=competences_etudiant, description="Définir les compétences."),
     Tool(name="type_travail", func=type_travail, description="Définir si le métier est manuel ou intellectuel."),
-    Tool(name="proposer_metier", func=proposer_metier, description="Proposer un métier en fonction des réponses.")
+    Tool(name="proposer_metier", func=agent.proposer_metier, description="Proposer un métier en fonction des réponses.")
 ]
 
 def executer_agent(agent):
@@ -105,5 +112,3 @@ def executer_agent(agent):
 
     response = agent.proposer_metier(interet, competences, type_travail)
     return {"response": response}
-
-

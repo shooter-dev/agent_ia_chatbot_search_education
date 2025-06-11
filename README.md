@@ -68,7 +68,7 @@ pip install -r requirements.txt
 Ajoute une clé DEEPSEEK dans .env :
 
 ```
-
+export DEEPSEEK_API_KEY="clé_api_deepseek"
 ```
 
 Lance l’application Streamlit :

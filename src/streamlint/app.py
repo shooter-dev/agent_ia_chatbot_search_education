@@ -9,6 +9,13 @@ def load_css(file_name):
 css = load_css("app.css")
 st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
+st.set_page_config(
+    page_title="Découverte de métier",
+    page_icon=":mag_right:",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 st.markdown(f'<h1 class="custom-title">{main.title}</h1>', unsafe_allow_html=True)
 st.markdown(f"""<p class="text_presentation">Découvrez le métier fait pour vous grâce à l\'IA !
 Vous vous demandez quel métier correspond le mieux à votre personnalité, vos compétences et vos aspirations ? Notre application, alimentée par l'intelligence artificielle, est là pour vous guider !

@@ -1,0 +1,62 @@
+/* Fond général */
+body {
+    background-color: #f5f7fa;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Titre principal */
+.custom-title {
+    font-size: 3em;
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Texte de présentation */
+.text_presentation {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #34495e;
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+/* Zone de réponse utilisateur */
+.input-text {
+    font-style: italic;
+    color: #2980b9;
+    margin-top: 0.5rem;
+}
+
+/* Champ de texte */
+input[type="text"] {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #dcdde1;
+    width: 100% !important;
+    margin-bottom: 1rem;
+    font-size: 1em;
+}
+
+/* Résultat final */
+.result-text {
+    background-color: #dff9fb;
+    padding: 1.5rem;
+    border-radius: 12px;
+    font-size: 1.3em;
+    text-align: center;
+    margin-top: 2rem;
+    color: #27ae60;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.metier {
+    font-weight: bold;
+    font-size: 1.5em;
+    color: #2ecc71;
+    display: inline;
+}

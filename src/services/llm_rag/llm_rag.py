@@ -11,13 +11,7 @@ class LlmRag(ILlmRag):
 
     def __init__(self, embedder):
         self.embedder = embedder
-        project_path = relative_project_root = Path(__file__).parents[3]
-        print(project_path)
-        print(project_path)
-        print(project_path)
-        print(project_path)
-        print(project_path)
-        print(project_path)
+
         db = Chroma(persist_directory=os.path.join(Path(__file__).parents[3], "data", "db"), embedding_function=self.embedder)
 
         # Conversion de la base Chroma en "retriever" pour effectuer des recherches par similarité

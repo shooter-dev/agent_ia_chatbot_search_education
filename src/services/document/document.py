@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+
 from langchain_community.document_loaders import CSVLoader, UnstructuredXMLLoader, UnstructuredExcelLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings

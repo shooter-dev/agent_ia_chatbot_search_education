@@ -46,25 +46,12 @@ class Agent(IAgent):
 
     def determiner_question_suivante(self):
         self.memory.clear()
-
-        interet = input("Quels sont tes centres d'intérêt ? ").strip()
-        competences = input("Quelles sont tes compétences ? ").strip()
-        type_travail = input("Préféres-tu un travail manuel ou intellectuel ? ").strip()
-        description_personnelle = input("Parlez de vous et de ce que vous pensez pertinent pour l'analyse des métiers : ").strip()
-
-        self.memory.add_user_message("Quels sont tes centres d'intérêt ?")
-        self.memory.add_ai_message(interet)
-
-        self.memory.add_user_message("Quelles sont tes compétences ?")
-        self.memory.add_ai_message(competences)
-
-        self.memory.add_user_message("Préféres-tu un travail manuel ou intellectuel ?")
-        self.memory.add_ai_message(type_travail)
-
-        self.memory.add_user_message("Parlez de vous et de ce que vous pensez pertinent pour l'analyse des métiers :")
-        self.memory.add_ai_message(description_personnelle)
-
-        return self.proposer_metier(interet, competences, type_travail, description_personnelle)
+        return [
+            "Quels sont tes centres d'intérêt ?",
+            "Quelles sont tes compétences ?",
+            "Préféres-tu un travail manuel ou intellectuel ?",
+            "Parlez de vous et de ce que vous pensez pertinent pour l'analyse des métiers :"
+        ]
 
     def proposer_metier(self, interets: str, competences: str, type_travail: str, description_personnelle: str):
         recherche_question = f"Quels métiers correspondent aux centres d'intérêt '{interets}', aux compétences '{competences}', et à la description personnelle '{description_personnelle}' ?"

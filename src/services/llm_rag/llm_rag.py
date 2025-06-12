@@ -40,4 +40,4 @@ class LlmRag(ILlmRag):
         """
 
         response = self.llm.invoke(prompt)
-        return response
+        return response.content

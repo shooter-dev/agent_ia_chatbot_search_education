@@ -1,4 +1,5 @@
 import abc
+from typing import List
 
 class ILlmRag(abc.ABC):
 
@@ -6,9 +7,9 @@ class ILlmRag(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def generate_responce(self, question: str) -> str:
-        return ''
+    def generate_response(self, question: str) -> str:
+        pass
 
     @abc.abstractmethod
-    def search_contex(self, question: str) -> str:
-        return ''
+    def search_context(self, question: str) -> List[str]:
+        pass

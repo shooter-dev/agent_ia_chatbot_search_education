@@ -1,18 +1,21 @@
-# This is a sample Python script.
+from src.services.agents.agent import Agent, executer_agent
+from src.services.llm_rag.llm_rag import LlmRag
+from langchain_ollama import OllamaEmbeddings
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+def main():
+    llm_rag = LlmRag(OllamaEmbeddings(model="paraphrase-multilingual"))
+    agent = Agent(llm_rag)
 
+    executer_agent(agent)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+    messages = agent.memory.messages
+    interet = messages[-4].content if len(messages) >= 4 else ""
+    competences = messages[-3].content if len(messages) >= 3 else ""
+    type_travail = messages[-2].content if len(messages) >= 2 else ""
+    description_personnelle = messages[-1].content if len(messages) >= 1 else ""
 
+    response = agent.proposer_metier(interet, competences, type_travail, description_personnelle)
+    print("Métier suggéré :", response)
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
-
-
+if __name__ == "__main__":
+    main()

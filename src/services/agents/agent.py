@@ -4,15 +4,18 @@ from dotenv import load_dotenv
 from langchain_ollama import ChatOllama
 from langchain_core.tools import Tool
 from langchain.agents import create_react_agent, AgentExecutor
-from langchain.memory import ConversationBufferMemory
+from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain import hub
+from src.services.llm_rag.llm_rag import LlmRag
+from langchain_ollama import OllamaEmbeddings
 
 class Agent(IAgent):
-    def __init__(self):
+    def __init__(self, llm_rag):
         super().__init__()
         load_dotenv(override=True)
         self.model = ChatOllama(model="llama3", temperature=0)
-        self.memory = ConversationBufferMemory()
+        self.memory = ChatMessageHistory()
+        self.llm_rag = llm_rag
 
     def create_react_agent(self, tools):
         prompt = hub.pull("hwchase17/react")
@@ -36,79 +39,63 @@ class Agent(IAgent):
         return executor
 
     def poser_question(self, question, question_type):
-        response = self.model.predict(question)
-        historique = self.memory.load_memory_variables({})
-        reponses = historique.get(question_type, "").split(", ") if historique.get(question_type) else []
-        reponses.append(response)
-        self.memory.save_context({question_type: ", ".join(reponses)}, {})
+        response = self.llm_rag.generate_response(question)
+        self.memory.add_user_message(question)
+        self.memory.add_ai_message(response)
         return response
 
     def determiner_question_suivante(self):
-        historique = self.memory.load_memory_variables({})
+        self.memory.clear()
 
-        interet = historique.get("interet", "").split(", ") if historique.get("interet") else []
-        competences = historique.get("competences", "").split(", ") if historique.get("competences") else []
-        type_travail = historique.get("type_travail", "").split(", ") if historique.get("type_travail") else []
+        interet = input("Quels sont tes centres d'intérêt ? ").strip()
+        competences = input("Quelles sont tes compétences ? ").strip()
+        type_travail = input("Préféres-tu un travail manuel ou intellectuel ? ").strip()
+        description_personnelle = input("Parlez de vous et de ce que vous pensez pertinent pour l'analyse des métiers : ").strip()
 
-        while not interet:
-            interet_input = input("Quels sont tes centres d'intérêt ? ")
-            if interet_input.strip():
-                interet.append(interet_input)
-                self.memory.save_context({"interet": ", ".join(interet)}, {})
+        self.memory.add_user_message("Quels sont tes centres d'intérêt ?")
+        self.memory.add_ai_message(interet)
 
-        while not competences:
-            competences_input = input("Quelles sont tes compétences ? ")
-            if competences_input.strip():
-                competences.append(competences_input)
-                self.memory.save_context({"competences": ", ".join(competences)}, {})
+        self.memory.add_user_message("Quelles sont tes compétences ?")
+        self.memory.add_ai_message(competences)
 
-        while not type_travail:
-            type_travail_input = input("Préféres-tu un travail manuel ou intellectuel ? ")
-            if type_travail_input.strip():
-                type_travail.append(type_travail_input)
-                self.memory.save_context({"type_travail": ", ".join(type_travail)}, {})
+        self.memory.add_user_message("Préféres-tu un travail manuel ou intellectuel ?")
+        self.memory.add_ai_message(type_travail)
 
-        return self.proposer_metier(", ".join(interet), ", ".join(competences), ", ".join(type_travail))
+        self.memory.add_user_message("Parlez de vous et de ce que vous pensez pertinent pour l'analyse des métiers :")
+        self.memory.add_ai_message(description_personnelle)
 
-    def proposer_metier(self, interets: str, competences: str, type_travail: str):
+        return self.proposer_metier(interet, competences, type_travail, description_personnelle)
+
+    def proposer_metier(self, interets: str, competences: str, type_travail: str, description_personnelle: str):
+        recherche_question = f"Quels métiers correspondent aux centres d'intérêt '{interets}', aux compétences '{competences}', et à la description personnelle '{description_personnelle}' ?"
+        contexte = self.llm_rag.search_context(recherche_question)
+        contexte_str = "\n".join(contexte)
+
         prompt = f"""
-        Analyse les informations suivantes et propose un métier adapté :
+        Voici des informations pertinentes sur les métiers liés aux centres d'intérêt, compétences et description personnelle :
+        {contexte_str}
+
+        En utilisant ces informations et les préférences suivantes :
         - Centres d'intérêt : {interets}
         - Compétences : {competences}
         - Type de travail préféré : {type_travail}
+        - Description personnelle : {description_personnelle}
 
-        Utilise ces trois critères pour déterminer un métier qui correspond le mieux à la personne.
-        Donne une réponse concise sous la forme : "Un métier adapté pourrait être : [nom du métier]".
+        Propose un métier adapté sous la forme : "Un métier adapté pourrait être : [nom du métier]".
+        Ne propose pas de métiers qui ne correspondent pas aux critères donnés.
         """
 
-        response = self.model.predict(prompt)
+        response = self.llm_rag.generate_response(prompt)
         return response
-
-def interet_etudiant(interets: str):
-    return f"Tu es intéressé par {interets}. Cela pourrait correspondre à certains métiers."
-
-def competences_etudiant(competences: str):
-    return f"Tu as des compétences en {competences}. Cela peut orienter vers des métiers spécifiques."
-
-def type_travail(choix: str):
-    return f"Tu préfères un travail {choix}. Cela réduit les options de métiers."
-
-agent = Agent()
-
-tools = [
-    Tool(name="interet", func=interet_etudiant, description="Définir les centres d'intérêt."),
-    Tool(name="competences", func=competences_etudiant, description="Définir les compétences."),
-    Tool(name="type_travail", func=type_travail, description="Définir si le métier est manuel ou intellectuel."),
-    Tool(name="proposer_metier", func=agent.proposer_metier, description="Proposer un métier en fonction des réponses.")
-]
 
 def executer_agent(agent):
     agent.determiner_question_suivante()
 
-    historique = agent.memory.load_memory_variables({})
-    interet = ", ".join(historique.get("interet", "").split(", "))
-    competences = ", ".join(historique.get("competences", "").split(", "))
-    type_travail = ", ".join(historique.get("type_travail", "").split(", "))
+    messages = agent.memory.messages
+    interet = messages[-4].content if len(messages) >= 4 else ""
+    competences = messages[-3].content if len(messages) >= 3 else ""
+    type_travail = messages[-2].content if len(messages) >= 2 else ""
+    description_personnelle = messages[-1].content if len(messages) >= 1 else ""
 
-    response = agent.proposer_metier(interet, competences, type_travail)
-    return {"response": response}
+    response = agent.proposer_metier(interet, competences, type_travail, description_personnelle)
+    print("Métier suggéré :", response)

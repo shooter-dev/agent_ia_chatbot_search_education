@@ -1,21 +1,24 @@
 import os
+from pathlib import Path
 from typing import List
 
-from langchain_community.vectorstores import Chroma
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-
-from src.entity.document_entity import Document
+from langchain_ollama import OllamaEmbeddings
+from langchain_chroma import Chroma
 from src.services.llm_rag.llm_rag_interface import ILlmRag
-
-from langchain_community.document_loaders import TextLoader
 
 
 class LlmRag(ILlmRag):
 
     def __init__(self, embedder):
         self.embedder = embedder
-
-        db = Chroma(persist_directory=os.path.join(os.getcwd(), "data", "db"), embedding_function=self.embedder)
+        project_path = relative_project_root = Path(__file__).parents[3]
+        print(project_path)
+        print(project_path)
+        print(project_path)
+        print(project_path)
+        print(project_path)
+        print(project_path)
+        db = Chroma(persist_directory=os.path.join(Path(__file__).parents[3], "data", "db"), embedding_function=self.embedder)
 
         # Conversion de la base Chroma en "retriever" pour effectuer des recherches par similarité
         # - search_type="similarity" utilise la distance cosinus entre les vecteurs
@@ -33,3 +36,11 @@ class LlmRag(ILlmRag):
         relevant_chunks = self.retriever.invoke(question)
 
         return [chunk.page_content for chunk in relevant_chunks]
+
+if __name__ == "__main__":
+
+    llm = LlmRag(OllamaEmbeddings(model="paraphrase-multilingual"))
+
+    rep = llm.search_contex("Quels sont les metier qui utilise l'électronique")
+
+    print(rep)

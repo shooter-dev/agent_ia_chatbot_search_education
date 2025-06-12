@@ -1,13 +1,12 @@
-/* Fond général */
+/* Styles de base adaptés aux deux modes */
 body {
-    background-color: #f5f7fa;
     font-family: 'Segoe UI', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 /* Titre principal */
 .custom-title {
     font-size: 3em;
-    color: #2c3e50;
     text-align: center;
     margin-top: 1rem;
     margin-bottom: 2rem;
@@ -17,46 +16,113 @@ body {
 .text_presentation {
     font-size: 1.1em;
     line-height: 1.6;
-    color: #34495e;
-    background-color: #ffffff;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     margin-bottom: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Zone de réponse utilisateur */
+/* Réponse utilisateur */
 .input-text {
     font-style: italic;
-    color: #2980b9;
     margin-top: 0.5rem;
 }
 
-/* Champ de texte */
+/* Champ texte */
 input[type="text"] {
     padding: 10px;
     border-radius: 8px;
-    border: 1px solid #dcdde1;
     width: 100% !important;
     margin-bottom: 1rem;
     font-size: 1em;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* Résultat final */
+/* Résultat */
 .result-text {
-    background-color: #dff9fb;
     padding: 1.5rem;
     border-radius: 12px;
     font-size: 1.3em;
     text-align: center;
     margin-top: 2rem;
-    color: #27ae60;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .metier {
     font-weight: bold;
     font-size: 1.5em;
-    color: #2ecc71;
     display: inline;
+}
+
+/* ====== Mode clair ====== */
+@media (prefers-color-scheme: light) {
+    body {
+        background-color: #f5f7fa;
+        color: #2c3e50;
+    }
+
+    .custom-title {
+        color: #2c3e50;
+    }
+
+    .text_presentation {
+        background-color: #ffffff;
+        color: #34495e;
+    }
+
+    .input-text {
+        color: #2980b9;
+    }
+
+    input[type="text"] {
+        background-color: #ffffff;
+        color: #2c3e50;
+        border: 1px solid #dcdde1;
+    }
+
+    .result-text {
+        background-color: #dff9fb;
+        color: #27ae60;
+    }
+
+    .metier {
+        color: #2ecc71;
+    }
+}
+
+/* ====== Mode sombre ====== */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1e1e1e;
+        color: #ecf0f1;
+    }
+
+    .custom-title {
+        color: #ecf0f1;
+    }
+
+    .text_presentation {
+        background-color: #2c2c2c;
+        color: #bdc3c7;
+        box-shadow: none;
+    }
+
+    .input-text {
+        color: #3498db;
+    }
+
+    input[type="text"] {
+        background-color: #2c2c2c;
+        color: #ecf0f1;
+        border: 1px solid #555;
+    }
+
+    .result-text {
+        background-color: #273c75;
+        color: #7bed9f;
+    }
+
+    .metier {
+        color: #2ed573;
+    }
 }

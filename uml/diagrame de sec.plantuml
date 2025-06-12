@@ -1,0 +1,42 @@
+@startuml
+actor Utilisateur
+participant Application
+participant Agent
+participant llmRAG
+participant Documents
+participant Tools
+participant BDD
+participant Streamlit
+participant Model
+
+== Phase d'apprentissage ==
+
+Utilisateur -> Application : Demarage
+Application -> Documents : Sauvegarde les documents
+Documents -> Application : l'application récupère les documents
+Application -> llmRAG : l'application donne les document au llm rag
+llmRAG -> llmRAG : Stocke les vecteurs (Vector Store)
+llmRAG -> llmRAG : Découpe + vectorise (Embeddings)
+llmRAG -> BDD : sauvegarde dans la base de données
+
+== Phase de requête ==
+
+Utilisateur -> Streamlit : Pose une question
+Streamlit -> Agent : Transmet la requête
+Agent -> llmRAG : Embedding de la requête
+
+llmRAG -> BDD : Recherche de contexte (Vector DB)
+BDD -> llmRAG : retourne les données de la base de donnee
+
+
+llmRAG -> Agent : Retourne les documents(chunks) pertinents
+
+Agent -> Model : Question + Contexte
+
+Model -> Agent : Réponse générée
+
+Agent -> Streamlit : Transmet la réponse
+
+Streamlit -> Utilisateur : Affiche la réponse
+
+@enduml

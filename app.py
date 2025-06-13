@@ -17,7 +17,7 @@ from langchain_ollama import OllamaEmbeddings
 
 if 'agent' not in st.session_state:
     try:
-        embeddings = OllamaEmbeddings(model="paraphrase-multilingual")
+        embeddings = OllamaEmbeddings(model="bge-m3")
         llm_rag = LlmRag(embeddings)
         st.session_state.agent = Agent(llm_rag)
     except Exception as e:

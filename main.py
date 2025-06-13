@@ -3,7 +3,7 @@ from src.services.llm_rag.llm_rag import LlmRag
 from langchain_ollama import OllamaEmbeddings
 
 def main():
-    llm_rag = LlmRag(OllamaEmbeddings(model="paraphrase-multilingual"))
+    llm_rag = LlmRag(OllamaEmbeddings(model="bge-m3"))
     agent = Agent(llm_rag)
 
     executer_agent(agent)

@@ -18,7 +18,7 @@ class LlmRag(ILlmRag):
 
         self.retriever = db.as_retriever(
             search_type="similarity",
-            search_kwargs={"k": 10}
+            search_kwargs={"k": 3}
         )
 
     def search_context(self, question: str) -> List[str]:

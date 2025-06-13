@@ -4,7 +4,7 @@ from pathlib import Path
 from langchain_community.document_loaders import CSVLoader, UnstructuredXMLLoader, UnstructuredExcelLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings
-from langchain_community.vectorstores import FAISS, Chroma
+from langchain_community.vectorstores import Chroma
 
 # 📂 Répertoire des données
 DATA_DIR = f"{Path(__file__).parents[3]}/data"
@@ -24,14 +24,13 @@ def load_documents():
 
 # 2️⃣ Préparation et tokenisation des documents
 def split_documents(documents):
-    splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=200, chunk_overlap=50)
     return splitter.split_documents(documents)
 
 # 3️⃣ Embeddings des documents
 def embed_documents(documents):
-    embeddings = OllamaEmbeddings(model="paraphrase-multilingual")
-    vector_db = FAISS.from_documents(documents, embeddings)
-    vector_db.save_local("vectorstore_index")
+    embeddings = OllamaEmbeddings(model="bge-m3")
+    Chroma.from_documents(documents, embeddings, persist_directory=f"{Path(__file__).parents[3]}/data/db")
 
 # 4️⃣ Exécution du pipeline
 def main():

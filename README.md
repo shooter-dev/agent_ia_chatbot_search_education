@@ -46,7 +46,12 @@ Dans une démarche de modernisation des services publics, ce projet vise à conc
 
 - 🐍 Python 3.10.10
 - 📦 Environnement virtuel (venv ou conda)
-- 🚀 OpenAI API Key (ou alternative gratuite)
+- 🚀 Ollama
+- 📦 model bge-m3 
+
+```
+ollama pull bge-m3:latest
+```
 
 ### 🔧 2️⃣ Installation
 

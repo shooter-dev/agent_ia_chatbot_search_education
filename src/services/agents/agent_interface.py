@@ -23,3 +23,4 @@ class IAgent(abc.ABC):
     @abc.abstractmethod
     def proposer_metier(self, interets: str, competences: str, type_travail: str, description_personnelle: str) -> str:
         pass
+
